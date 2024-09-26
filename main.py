@@ -7,13 +7,10 @@ from mocap_lateral_raise import Lateral_raise_mocap
 from mocap_curl import Curl_mocap
 from split_manager import splitManager
 
-
-
-
 app = Flask(__name__)
 
 def run_script_(payload): #check returns on this function to see how we return the results to web app.
-    exercise_list = payload.get('splitCall', []) #default will be empty list if not specified #truthy if is a split, falsy if not a split
+    exercise_list = payload.get('exercise_list', []) #default will be empty list if not specified #truthy if is a split, falsy if not a split
     if exercise_list: #if payload is a split call (multiple exercises incoming)
         split_manager = splitManager(exercise_list)
         split_manager.launch_exercise_chain() 
@@ -47,9 +44,8 @@ def run_script_(payload): #check returns on this function to see how we return t
                 if bic.animate_flag:
                     print("Running the animator now!")
                     bic.run_unity_animator() 
-
             #add new scripts here
-            case _: 
+            case _:
                 return None
 
 @app.route('/run_script', methods=['POST'])
